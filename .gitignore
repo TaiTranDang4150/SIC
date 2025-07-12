@@ -1,0 +1,25 @@
+# Thư mục môi trường ảo
+venv/
+.env
+
+# File sinh ra khi chạy Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# File mô hình hoặc dữ liệu nặng
+*.pt
+*.h5
+*.bin
+*.csv
+*.tsv
+
+# Thư mục IDE (VSCode, PyCharm...)
+.vscode/
+.idea/
+
+# Docker volumes (optional)
+*.log
