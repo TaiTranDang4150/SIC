@@ -37,8 +37,9 @@ def normalize_time(raw_time: str) -> Optional[str]:
         )
         return dt.isoformat() if dt else None
     except Exception as e:
-        print(f"⚠️ Lỗi khi chuẩn hóa thời gian '{raw_time}': {e}") # Thêm raw_time vào log
+        print(f"⚠️ Lỗi khi chuẩn hóa thời gian '{raw_time}': {e}")  # Thêm raw_time vào log
         return None
+
 
 # Xử lý tác giả
 def safe_author(author):
@@ -72,6 +73,7 @@ def clean_content(text: str, author: Optional[str] = None) -> str:
 
     return text.strip()
 
+
 # ==== Xử lý tags ====
 def clean_tags(tags):
     if not tags:
@@ -84,7 +86,7 @@ def get_ner_tag(content):
     try:
         if not content or not content.strip():
             return []
-        
+
         tokens, labels = predict_ner(content)
         entities = extract_entities(tokens, labels)
         return entities
@@ -115,6 +117,7 @@ def preprocess_article(article: Dict) -> Dict:
         print(f"⚠️ Lỗi khi xử lý bài viết ID {article.get('id', 'Unknown')}: {e}")
         return None
 
+
 # ==== Xử lý toàn bộ file (đây sẽ là hàm main cho Airflow) ====
 def main(input_filename: str = "all_news_combined.json", output_filename: str = "processed_all_news_combined.json"):
     """
@@ -126,7 +129,6 @@ def main(input_filename: str = "all_news_combined.json", output_filename: str = 
     base_data_path = "/opt/airflow/sic_project/data"
     input_path = os.path.join(base_data_path, input_filename)
     output_path = os.path.join(base_data_path, output_filename)
-
 
     if not Path(input_path).exists():
         print(f"❌ Không tìm thấy file input: {input_path}")
@@ -164,14 +166,13 @@ def main(input_filename: str = "all_news_combined.json", output_filename: str = 
     print(f"✅ Đã xử lý thành công {processed_count} bài viết. Bỏ qua {skipped_count} bài.")
     print(f"Tổng số bài viết sau xử lý: {len(cleaned_data)}")
 
-
     try:
         # Tạo thư mục output nếu chưa tồn tại
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(cleaned_data, f, ensure_ascii=False, indent=2)
-        
+
         print(f"💾 Đã lưu dữ liệu chuẩn hóa vào: {output_path}")
         return True
     except Exception as e:
@@ -182,15 +183,15 @@ def main(input_filename: str = "all_news_combined.json", output_filename: str = 
 if __name__ == "__main__":
     # Khi chạy độc lập, vẫn giả định cấu trúc thư mục từ project root
     # Đảm bảo sys.path.append ở đầu file được kích hoạt nếu chạy độc lập
-    
+
     # Đối với môi trường dev/test độc lập trên máy local,
     # có thể cần điều chỉnh đường dẫn này nếu cấu trúc thư mục khác với Airflow Docker
-    
+
     # Giả định chạy từ PROJECT_ROOT/sic_project/process_data/
     # input_path và output_path phải trỏ đúng đến ../data/
-    
+
     # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))) # Đã uncomment nếu cần
-    
+
     # Để đơn giản và nhất quán, bạn có thể gọi hàm main() với các tham số mặc định
     # hoặc truyền đường dẫn đầy đủ nếu bạn biết nó ở đâu trong môi trường độc lập.
     # Ví dụ nếu chạy từ project root:

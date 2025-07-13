@@ -25,7 +25,7 @@ def show_trend_analysis():
     [data-testid="stSidebarNav"] {
         display: none;
     }
-    
+
     /* Custom header styling */
     .main-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -34,7 +34,7 @@ def show_trend_analysis():
         margin-bottom: 2rem;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    
+
     .header-title {
         color: white;
         font-size: 2.5rem;
@@ -43,14 +43,14 @@ def show_trend_analysis():
         margin: 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    
+
     .header-subtitle {
         color: rgba(255,255,255,0.9);
         font-size: 1.2rem;
         text-align: center;
         margin-top: 0.5rem;
     }
-    
+
     .time-display {
         background: rgba(255,255,255,0.2);
         padding: 0.8rem 1.5rem;
@@ -60,7 +60,7 @@ def show_trend_analysis():
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255,255,255,0.3);
     }
-    
+
     /* Sidebar styling */
     .sidebar-content {
         background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
@@ -69,7 +69,7 @@ def show_trend_analysis():
         margin-bottom: 1rem;
         box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
-    
+
     /* Card styling */
     .metric-card {
         background: white;
@@ -79,20 +79,20 @@ def show_trend_analysis():
         border-left: 4px solid #667eea;
         margin-bottom: 1rem;
     }
-    
+
     .metric-number {
         font-size: 2.5rem;
         font-weight: 700;
         color: #667eea;
         margin: 0;
     }
-    
+
     .metric-label {
         color: #6c757d;
         font-size: 0.9rem;
         margin-top: 0.5rem;
     }
-    
+
     /* Chart container styling */
     .chart-container {
         background: white;
@@ -101,7 +101,7 @@ def show_trend_analysis():
         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         margin-bottom: 2rem;
     }
-    
+
     .chart-title {
         font-size: 1.5rem;
         font-weight: 600;
@@ -109,14 +109,14 @@ def show_trend_analysis():
         margin-bottom: 1rem;
         text-align: center;
     }
-    
+
     /* Animation for cards */
     .metric-card:hover {
         transform: translateY(-5px);
         transition: all 0.3s ease;
         box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
-    
+
     /* Responsive design */
     @media (max-width: 768px) {
         .header-title {
@@ -131,42 +131,42 @@ def show_trend_analysis():
 
     # Header section với thiết kế đẹp mắt
     st.markdown('<div class="main-header">', unsafe_allow_html=True)
-    
+
     col_logo, col_center, col_time = st.columns([1, 2, 1])
-    
+
     with col_logo:
         try:
             st.image("C:\\Users\\Admin\\Downloads\\anh_logo_meo.jpg", width=120)
         except:
             st.markdown("📰", unsafe_allow_html=True)
-    
+
     with col_center:
         st.markdown('<h1 class="header-title">📰 Báo Điện Tử</h1>', unsafe_allow_html=True)
         st.markdown('<p class="header-subtitle">Phân tích xu hướng tin tức thông minh</p>', unsafe_allow_html=True)
-    
+
     with col_time:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         current_date = now.strftime("%d/%m/%Y")
         st.markdown(f'<div class="time-display">🕐 {current_time}<br>📅 {current_date}</div>', unsafe_allow_html=True)
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Sidebar với thiết kế đẹp mắt
     with st.sidebar:
         st.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
-        
+
         # Logo nhỏ trong sidebar
         st.markdown("### 📊 Bộ lọc thời gian")
         st.markdown("---")
-        
+
         # Danh sách mốc thời gian với emoji
         time_range_options = {
             '24 giờ qua': '🕐',
-            '7 ngày qua': '📅', 
+            '7 ngày qua': '📅',
             '1 tháng qua': '🗓️'
         }
-        
+
         selected_time_range = st.selectbox(
             'Chọn khoảng thời gian',
             list(time_range_options.keys()),
@@ -174,7 +174,7 @@ def show_trend_analysis():
         )
 
         st.markdown("### 🎨 Chủ đề màu sắc")
-        
+
         # Chọn kiểu màu sắc hiển thị với preview
         color_theme_options = {
             'viridis': '🟢',
@@ -187,27 +187,27 @@ def show_trend_analysis():
             'reds': '🔴',
             'rainbow': '🎨'
         }
-        
+
         selected_color_theme = st.selectbox(
             'Chọn bảng màu',
             list(color_theme_options.keys()),
             format_func=lambda x: f"{color_theme_options[x]} {x.title()}"
         )
-        
+
         st.markdown('</div>', unsafe_allow_html=True)
-        
+
         # Thông tin thống kê nhanh
         st.markdown("### 📈 Thống kê tổng quan")
         total_articles = len(df)
         st.metric("📰 Tổng bài báo", total_articles, delta="100%")
-        
+
         # Tính toán bài báo trong 24h
         recent_articles = len(df[df['time_posted'] >= now - timedelta(days=1)])
-        st.metric("🕐 24h gần nhất", recent_articles, delta=f"{recent_articles - total_articles//30} so với TB")
+        st.metric("🕐 24h gần nhất", recent_articles, delta=f"{recent_articles - total_articles // 30} so với TB")
 
     # Main content area
     st.markdown("## 📊 Phân tích xu hướng tin tức")
-    
+
     # Gọi hàm phân tích với giao diện đẹp mắt
     line_chart_analytic(df, selected_time_range, selected_color_theme)
 
@@ -245,17 +245,17 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
     # Biểu đồ số lượng bài báo với thiết kế đẹp mắt
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     st.markdown('<h3 class="chart-title">📈 Xu hướng số lượng bài báo</h3>', unsafe_allow_html=True)
-    
+
     # Tạo biểu đồ với gradient và animation
     fig_time = go.Figure()
-    
+
     fig_time.add_trace(go.Scatter(
         x=time_count['time_group'],
         y=time_count['num_articles'],
         mode='lines+markers',
         name='Số bài báo',
         line=dict(
-            color='rgba(102, 126, 234, 0.8)',
+            color='rgba(102, 126, 234, 0.😎',
             width=3,
             shape='spline'
         ),
@@ -268,7 +268,7 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
         fillcolor='rgba(102, 126, 234, 0.1)',
         hovertemplate='<b>%{x}</b><br>Số bài báo: %{y}<extra></extra>'
     ))
-    
+
     fig_time.update_layout(
         title='',
         xaxis_title='Thời gian',
@@ -290,33 +290,33 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
             linecolor='rgba(0,0,0,0.2)'
         )
     )
-    
+
     st.plotly_chart(fig_time, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Metrics cards
     col1, col2, col3, col4 = st.columns(4)
-    
+
     with col1:
         st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.markdown(f'<p class="metric-number">{len(filtered_df)}</p>', unsafe_allow_html=True)
         st.markdown('<p class="metric-label">📰 Tổng bài báo</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    
+
     with col2:
         avg_daily = round(len(filtered_df) / max(1, len(time_count)), 1)
         st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.markdown(f'<p class="metric-number">{avg_daily}</p>', unsafe_allow_html=True)
         st.markdown('<p class="metric-label">📊 Trung bình/ngày</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    
+
     with col3:
         max_articles = time_count['num_articles'].max()
         st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.markdown(f'<p class="metric-number">{max_articles}</p>', unsafe_allow_html=True)
         st.markdown('<p class="metric-label">🔥 Cao nhất</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    
+
     with col4:
         unique_categories = len(filtered_df['tags'].explode().unique())
         st.markdown('<div class="metric-card">', unsafe_allow_html=True)
@@ -348,7 +348,7 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
             color_continuous_scale=selected_color_theme,
             orientation='h'
         )
-        
+
         fig_category.update_layout(
             yaxis={'categoryorder': 'total ascending'},
             xaxis_title='Số lượng bài viết',
@@ -357,15 +357,53 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
             height=500,
             showlegend=False
         )
-        
+
         fig_category.update_traces(
             hovertemplate='<b>%{y}</b><br>Số bài viết: %{x}<extra></extra>'
         )
-        
+
         st.plotly_chart(fig_category, use_container_width=True)
     else:
         st.info("📭 Không có dữ liệu phân loại chuyên mục.")
-    
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Biểu đồ phân phối bài viết theo tác giả
+    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+    st.markdown('<h3 class="chart-title">✍️ Top 10 Tác giả nổi bật</h3>', unsafe_allow_html=True)
+
+    # Đếm số lượng bài báo của từng tác giả
+    author_count = filtered_df['author'].value_counts().head(10).reset_index()
+    author_count.columns = ['Author', 'Count']
+
+    if len(author_count) > 0:
+        fig_author = px.bar(
+            author_count,
+            x='Count',
+            y='Author',
+            title='',  # Tiêu đề đã được đặt trong thẻ h3
+            color='Count',
+            color_continuous_scale=selected_color_theme,
+            orientation='h'  # Biểu đồ cột ngang
+        )
+
+        fig_author.update_layout(
+            yaxis={'categoryorder': 'total ascending'},  # Sắp xếp cột tăng dần
+            xaxis_title='Số lượng bài viết',
+            yaxis_title='',
+            template='plotly_white',
+            height=500,
+            showlegend=False
+        )
+
+        fig_author.update_traces(
+            hovertemplate='<b>%{y}</b><br>Số bài viết: %{x}<extra></extra>'
+        )
+
+        st.plotly_chart(fig_author, use_container_width=True)
+    else:
+        st.info("📭 Không có dữ liệu tác giả để hiển thị trong khoảng thời gian này.")
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Phân tích thực thể NER
@@ -380,21 +418,21 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
 
     if all_entities:
         entity_df = pd.DataFrame(all_entities, columns=['Entity', 'Type'])
-        
+
         # Tạo tabs cho các loại thực thể
         tab1, tab2, tab3 = st.tabs(["👤 Nhân vật", "📍 Địa điểm", "🏢 Tổ chức"])
-        
+
         entity_types = [('PER', '👤'), ('LOC', '📍'), ('ORG', '🏢')]
         tabs = [tab1, tab2, tab3]
-        
+
         for idx, (entity_type, emoji) in enumerate(entity_types):
             with tabs[idx]:
                 df_entity = entity_df[entity_df['Type'] == entity_type]
-                
+
                 if len(df_entity) > 0:
                     entity_count = df_entity['Entity'].value_counts().head(10).reset_index()
                     entity_count.columns = ['Entity', 'Count']
-                    
+
                     fig = px.bar(
                         entity_count,
                         y='Entity',
@@ -404,7 +442,7 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
                         color_continuous_scale=selected_color_theme,
                         orientation='h'
                     )
-                    
+
                     fig.update_layout(
                         yaxis={'categoryorder': 'total ascending'},
                         xaxis_title='Số lần nhắc đến',
@@ -413,17 +451,17 @@ def line_chart_analytic(df, selected_time_range, selected_color_theme):
                         height=400,
                         showlegend=False
                     )
-                    
+
                     fig.update_traces(
                         hovertemplate='<b>%{y}</b><br>Số lần nhắc: %{x}<extra></extra>'
                     )
-                    
+
                     st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.info(f"{emoji} Không có dữ liệu cho nhóm {entity_type}")
     else:
         st.info("📭 Không có dữ liệu thực thể để hiển thị.")
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Footer
